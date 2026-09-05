@@ -1,0 +1,14 @@
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/bin/Debug/net10.0/PlayGround
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/bin/Debug/net10.0/PlayGround.deps.json
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/bin/Debug/net10.0/PlayGround.runtimeconfig.json
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/bin/Debug/net10.0/PlayGround.dll
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/bin/Debug/net10.0/PlayGround.pdb
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.GeneratedMSBuildEditorConfig.editorconfig
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.AssemblyInfoInputs.cache
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.AssemblyInfo.cs
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.csproj.CoreCompileInputs.cache
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.dll
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/refint/PlayGround.dll
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.pdb
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.genruntimeconfig.cache
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/ref/PlayGround.dll
