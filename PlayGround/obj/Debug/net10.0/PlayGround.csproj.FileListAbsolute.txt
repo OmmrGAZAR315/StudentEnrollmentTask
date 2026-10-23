@@ -12,3 +12,4 @@
 /home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.pdb
 /home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.genruntimeconfig.cache
 /home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/ref/PlayGround.dll
+/home/omar-elgazzar/Projects/RiderProjects/PlayGround/PlayGround/obj/Debug/net10.0/PlayGround.sourcelink.json

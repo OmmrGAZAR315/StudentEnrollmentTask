@@ -2,79 +2,91 @@
 {
     internal class Program
     {
-        public static int StudentProjectLimit = 5;
-
         static void Main(string[] args)
         {
-            #region Course Repository
+            var list = Source.ProductList;
 
-            Dictionary<string, Course> coursesTemp = new()
+            //Q1
+            var result = list.Where(p => p.Category == "Seafood")
+                .Select(p => new { p.ProductName, p.UnitPrice });
+            foreach (var p in result)
+                Console.WriteLine(p);
+
+            //Q2
+            var result2 = list.Select(p => new { p.ProductName });
+            foreach (var p in result2)
+                Console.WriteLine(p);
+
+            //Q3
+            var result3 = list.OrderBy(p => p.UnitPrice)
+                .Select(p => new { p.ProductName, p.UnitPrice });
+            foreach (var p in result3)
+                Console.WriteLine(p);
+
+            //Q4
+            var result4 = list.Where(p => 30 > p.UnitPrice && p.UnitPrice > 10);
+            foreach (var p in result4)
+                Console.WriteLine(p);
+
+            //Q5
+            var result5 = list.Where(p => p.UnitsInStock > 0)
+                .Where(p => p.Category == "Condiments");
+            foreach (var p in result5)
+                Console.WriteLine(p);
+
+            //Q6
+            var result6 = list.Select(p => new
             {
-                { "C1", new("Course1", "C1", 3, "10 weeks", 3.5m) },
-                { "C2", new("Course2", "C2", 4, "12 weeks", 4.0m) },
-                { "C3", new("Course3", "C3", 2, "8 weeks", 2.5m) },
-                { "C4", new("Course4", "C4", 5, "14 weeks", 4.5m) },
-                { "C5", new("Course5", "C5", 3, "10 weeks", 3.5m) },
-            };
+                Name = p.ProductName,
+                Price = p.UnitPrice,
+                Stock = p.UnitsInStock > 0 ? "Available" : "Out of Stock"
+            });
+            foreach (var p in result6)
+                Console.WriteLine(p);
 
-            #endregion
+            //Q7
+            var result7 = list.Select((p, i) => "Product " + (i + 1) + ": " + p.ProductName);
+            foreach (var p in result7)
+                Console.WriteLine(p);
 
-            #region Student Repository
+            //Q8
+            var result8 = list.OrderBy(p => p.Category)
+                .ThenByDescending(p => p.UnitPrice);
+            foreach (var p in result8)
+                Console.WriteLine(p);
 
-            Dictionary<string, Student> studentApplicants = new()
-            {
-                { "St1", new("St1", "Student 1", 3.2m, ["C1", "C2", "C3"]) },
-                { "St2", new("St2", "Student 2", 3.5m, ["C2", "C3", "C4"]) },
-                { "St3", new("St3", "Student 3", 3.0m, ["C1", "C4", "C5"]) },
-                { "St4", new("St4", "Student 4", 3.8m, ["C3", "C4", "C5"]) },
-                { "St5", new("St5", "Student 5", 3.1m, ["C1", "C2", "C5"]) },
-            };
+            //Q9
+            var result9 = list.Where(p => p.Category == "Beverages")
+                .OrderByDescending(p => p.UnitPrice)
+                .Select(p => new { p.ProductName, p.UnitsInStock });
+            foreach (var p in result9)
+                Console.WriteLine(p);
 
-            #endregion
+            //Q10
+            var customers = Source.CustomerList;
+            var result10 =
+                from c in customers
+                from o in c.Orders
+                where o.OrderDate >= new DateTime(1997, 1, 1)
+                select new { c.CustomerID, o.OrderDate };
+            foreach (var p in result10)
+                Console.WriteLine(p);
 
-            var courseRepo = new CourseRepository(coursesTemp);
-            var studentRepo = new StudentRepository();
+            var result11 = list.Select((p, i) => $"(i+1) {p.ProductName}");
+            foreach (var p in result11)
+                Console.WriteLine(p);
 
-            var registeredStudents = new Queue<Student>();
-            for (var i = 0; i < StudentProjectLimit; i++)
-                registeredStudents.Enqueue(studentApplicants.Values.ToArray()[i]);
+            String[] Arr = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
+            Arr.OrderBy(a => a.Length).ThenBy(a => a, StringComparer.OrdinalIgnoreCase);
 
-            EnrollRepository enrollRepository = new EnrollRepository(studentApplicants);
-            var AdminActions = new Stack<string>();
-
-            foreach (var student in registeredStudents)
-            {
-                foreach (var courseCode in student.WishListCourses)
-                {
-                    try
-                    {
-                        enrollRepository.EnrollStudentInCourse(student.Id, courseCode);
-                        AdminActions.Push($"Enrolled Student {student.Id} in Course {courseCode}");
-                        // Console.WriteLine("Enrolled Student in Course");
-                        studentRepo.Add(student);
-                    }
-                    catch (CourseMaxCapacityException)
-                    {
-                        AdminActions.Push($"Dropped Course {courseCode}");
-                        // Console.WriteLine("Dropped Course");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error enrolling student {student.Id} in course {courseCode}: {ex.Message}");
-                        Console.WriteLine($"{ex.StackTrace}");
-                    }
-                }
-            }
-
-
-            Console.WriteLine(string.Join(",", studentRepo.GetAll()));
-            Console.WriteLine("-------------------------------------");
-            Console.WriteLine("Filter Students with GPA >= 2:");
-            studentRepo.Filter(student => student.GPA >= 2.0m).ForEach(c => Console.WriteLine(c.Name+": GPA"+c.GPA));
-            Console.WriteLine("-------------------------------------");
-            Console.WriteLine("Undo Admin Actions:");
-            Console.WriteLine(AdminActions.Pop());
-            Console.WriteLine(AdminActions.Pop());
+            foreach (var s in Arr)
+                Console.WriteLine(s);
+            
+            string[] digits = { "zero", "one", "two", "three", "four",
+                "five", "six", "seven", "eight", "nine" };
+            var result12 = digits.Where(d => d[1] == 'i').Reverse();
+            foreach (var d in result12)
+                Console.WriteLine(d);
         }
     }
 }
