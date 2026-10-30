@@ -5,88 +5,140 @@
         static void Main(string[] args)
         {
             var list = Source.ProductList;
-
+            var customerList = Source.CustomerList;
             //Q1
-            var result = list.Where(p => p.Category == "Seafood")
-                .Select(p => new { p.ProductName, p.UnitPrice });
-            foreach (var p in result)
-                Console.WriteLine(p);
-
+            var top3 = list.OrderByDescending(p => p.UnitPrice).Take(3).ToArray();
+            foreach (var VARIABLE in top3) Console.WriteLine(VARIABLE.ProductName);
             //Q2
-            var result2 = list.Select(p => new { p.ProductName });
-            foreach (var p in result2)
-                Console.WriteLine(p);
-
+            var v = list.Skip(5).Take(5).ToArray();
             //Q3
-            var result3 = list.OrderBy(p => p.UnitPrice)
-                .Select(p => new { p.ProductName, p.UnitPrice });
-            foreach (var p in result3)
-                Console.WriteLine(p);
-
+            var q3 = list.TakeWhile(p => p.UnitPrice < 25)
+                .OrderBy(p => p.UnitPrice)
+                .ToArray();
             //Q4
-            var result4 = list.Where(p => 30 > p.UnitPrice && p.UnitPrice > 10);
-            foreach (var p in result4)
-                Console.WriteLine(p);
-
+            var q4 = list.All(p => p is { Category: "Seafood", UnitsInStock: > 0 });
+            Console.WriteLine(q4);
             //Q5
-            var result5 = list.Where(p => p.UnitsInStock > 0)
-                .Where(p => p.Category == "Condiments");
-            foreach (var p in result5)
-                Console.WriteLine(p);
+            int[] ids = { 3, 9, 13, 18 };
+            var q5 = ids.Contains(9);
+            Console.WriteLine(q5);
 
             //Q6
-            var result6 = list.Select(p => new
+            var t = list.GroupBy(p => p.Category)
+                .Select(g => new { Category = g.Key, Count = g.Count() })
+                .ToDictionary(x => x.Category, x => x.Count);
+            foreach (var VARIABLE in t)
             {
-                Name = p.ProductName,
-                Price = p.UnitPrice,
-                Stock = p.UnitsInStock > 0 ? "Available" : "Out of Stock"
-            });
-            foreach (var p in result6)
-                Console.WriteLine(p);
+                Console.WriteLine(VARIABLE.Key + " : " + VARIABLE.Value);
+            }
 
             //Q7
-            var result7 = list.Select((p, i) => "Product " + (i + 1) + ": " + p.ProductName);
-            foreach (var p in result7)
-                Console.WriteLine(p);
+            var q7 = list.GroupBy(p => new { p.Category, p.ProductName })
+                .ToArray();
+            foreach (var VARIABLE in q7)
+            {
+                Console.WriteLine(VARIABLE.Key.Category + " : " + VARIABLE.Key.ProductName);
+            }
 
             //Q8
-            var result8 = list.OrderBy(p => p.Category)
-                .ThenByDescending(p => p.UnitPrice);
-            foreach (var p in result8)
-                Console.WriteLine(p);
+            var q8 = list.GroupBy(p => p.Category)
+                .Where(g => g.Count() > 3)
+                .ToArray();
+            foreach (var VARIABLE in q8)
+            {
+                Console.WriteLine(VARIABLE.Key);
+            }
 
-            //Q9
-            var result9 = list.Where(p => p.Category == "Beverages")
-                .OrderByDescending(p => p.UnitPrice)
-                .Select(p => new { p.ProductName, p.UnitsInStock });
-            foreach (var p in result9)
-                Console.WriteLine(p);
+            //q9
+            var q9 = from p in customerList
+                group p by p.Country
+                into g
+                select new
+                {
+                    Country = g.Key, Count = g.Count(),
+                    TotalOrderValue = (from c in g
+                        from order in c.Orders
+                        select order.Total).Sum(),
+                    TotalOrderValue2 = g.SelectMany(c => c.Orders)
+                        .Sum(o => o.Total)
+                };
+            foreach (var VARIABLE in q9)
+            {
+                Console.WriteLine(VARIABLE.Country + " : " + VARIABLE.Count + " : " + VARIABLE.TotalOrderValue);
+            }
 
             //Q10
-            var customers = Source.CustomerList;
-            var result10 =
-                from c in customers
-                from o in c.Orders
-                where o.OrderDate >= new DateTime(1997, 1, 1)
-                select new { c.CustomerID, o.OrderDate };
-            foreach (var p in result10)
-                Console.WriteLine(p);
+            var q10 = list.Sum(p => p.UnitPrice);
+            Console.WriteLine(q10);
+            //Q11
+            var q11 = list.Min(p => p.UnitPrice);
+            var q111 = list.Max(p => p.UnitPrice);
+            Console.WriteLine(q11);
+            Console.WriteLine(q111);
+            //Q12
+            var q12 = list.Select(p => p.ProductName).Distinct().ToArray();
+            foreach (var VARIABLE in q12)
+            {
+                Console.WriteLine(VARIABLE);
+            }
 
-            var result11 = list.Select((p, i) => $"(i+1) {p.ProductName}");
-            foreach (var p in result11)
-                Console.WriteLine(p);
+            //Q13
+            int[] setA = { 1, 3, 5, 7, 9, 11, 13 };
+            int[] setB = { 3, 6, 9, 12, 15, 13 };
+            var q13 = setA.Except(setB);
+            foreach (var VARIABLE in q13)
+            {
+                Console.WriteLine(VARIABLE);
+            }
 
-            String[] Arr = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
-            Arr.OrderBy(a => a.Length).ThenBy(a => a, StringComparer.OrdinalIgnoreCase);
+            //Q14
+            string[] list1 = { "Germany", "France", "UK", "Spain" };
+            string[] list2 = { "france", "SPAIN", "Italy" };
+            var q14 = list1.Except(list2, StringComparer.OrdinalIgnoreCase);
+            foreach (var VARIABLE in q14)
+            {
+                Console.WriteLine(VARIABLE);
+            }
 
-            foreach (var s in Arr)
-                Console.WriteLine(s);
+            //Q15
+            Dictionary<int, Product> productDic =
+                list
+                    .Where(p => p.ProductID == 18)
+                    .GroupBy(p => p.ProductID)
+                    .ToDictionary(g => g.Key, g => g.First());
+            Console.WriteLine(productDic[18].ProductName);
             
-            string[] digits = { "zero", "one", "two", "three", "four",
-                "five", "six", "seven", "eight", "nine" };
-            var result12 = digits.Where(d => d[1] == 'i').Reverse();
-            foreach (var d in result12)
-                Console.WriteLine(d);
+            //Q16
+            var q16 = list.First(p => p.UnitPrice > 50);
+            Console.WriteLine(q16.ProductName);
+            //Q17
+            var q17 = list.FirstOrDefault(p => p.UnitPrice > 500);
+            //Q18
+            var q18 = Enumerable.Range(1, 10).Select(i => $"7 x {i} = {i * 7}").ToArray();
+            foreach (var VARIABLE in q18)
+                Console.WriteLine(VARIABLE);
+            //Q19
+            var q19 = Enumerable.Range(1, 30).Where(i=>i%2==0).ToArray();
+            foreach (var VARIABLE in q19)
+                Console.WriteLine(VARIABLE);
+
+            Console.WriteLine("----------");
+            //Q20
+            var concated = list.Take(3).Select(p=>p.ProductName).Concat(customerList.Take(3).Select(c=>c.CustomerName)).ToArray();
+
+            foreach (var s in concated)
+            {
+                Console.WriteLine(s);
+            }
+
+            Console.WriteLine("#####");
+            //Q21
+            var zipped = list.Zip(customerList, (p, c) => new { Product = p, Customer = c });
+            foreach (var VARIABLE in zipped)
+            {
+                Console.WriteLine(VARIABLE.Product.ProductName + " Sold To " + VARIABLE.Customer.CustomerID);
+            }
+            
         }
     }
 }
